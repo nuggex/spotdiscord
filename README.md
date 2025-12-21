@@ -39,7 +39,7 @@ Prices are fetched from `api.spot-hinta.fi` (`/dayForward`), converted to **c/kW
 
 ### 1️⃣ Clone & install
 ```bash
-git clone https://github.com/YOUR_USERNAME/discord-electricity-bot.git
+git clone 
 cd discord-electricity-bot
 npm install
 cp .env.template .env
