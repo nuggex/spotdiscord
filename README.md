@@ -43,5 +43,5 @@ git clone https://github.com/YOUR_USERNAME/discord-electricity-bot.git
 cd discord-electricity-bot
 npm install
 cp .env.template .env
-Configure envs and invite a bot into you server
-node bot.mjs
+# Configure envs and invite a bot into you server
+npm start

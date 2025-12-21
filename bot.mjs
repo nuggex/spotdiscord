@@ -107,7 +107,6 @@ async function postDaily() {
   if (!Array.isArray(data) || data.length === 0) {
     throw new Error("No price data available");
   }
-	console.log(data);
   // Sort chronologically
   data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
 

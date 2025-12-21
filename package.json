@@ -1,9 +1,11 @@
 {
   "name": "discordspot",
   "version": "1.0.0",
-  "type": "commonjs",
+  "type": "module",
+  "description": "Discord bot that posts daily Finnish electricity prices as a graph",
+  "main": "bot.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node bot.mjs"
   },
   "dependencies": {
     "chartjs-node-canvas": "^5.0.0",
@@ -11,9 +13,5 @@
     "dotenv": "^17.2.3",
     "node-fetch": "^3.3.2"
   },
-  "description": "",
-  "main": "bot.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }
