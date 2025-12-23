@@ -139,7 +139,7 @@ async function generateBandGraph(data, date) {
                         const gradient = canvas.createLinearGradient(0, y.top, 0, y.bottom);
 
                         // Red (expensive)
-                        gradient.addColorStop(0, "rgba(239, 68, 68, 0.35)");
+                        gradient.addColorStop(0, "rgba(255, 71, 71, 0.45)");
 
                         // Neutral around average
                         const stop = (avgY - y.top) / (y.bottom - y.top);
@@ -149,7 +149,7 @@ async function generateBandGraph(data, date) {
                         );
 
                         // Green (cheap)
-                        gradient.addColorStop(1, "rgba(34, 197, 94, 0.35)");
+                        gradient.addColorStop(1, "rgba(0, 255, 136, 0.45)");
 
                         return gradient;
                     }
@@ -321,7 +321,7 @@ async function postDaily() {
 
     const channel = await client.channels.fetch(CHANNEL_ID);
     await channel.send({
-        content: "📈 Daily electricity price curve",
+        content: `📈 ${date} Spot prices` ,
         files: ["/tmp/prices.png"]
     });
     process.exit(0);
