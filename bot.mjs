@@ -370,7 +370,7 @@ async function postDaily() {
 
     const channel = await client.channels.fetch(CHANNEL_ID);
     await channel.send({
-        content: `📈 ${date} Spot prices`,
+        content: `📈 ${formatFinnishDate(date)} Spot prices`,
         files: ["/tmp/prices.png"]
     });
     process.exit(0);
