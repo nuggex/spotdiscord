@@ -200,6 +200,17 @@ const headerPlugin = (date, stats) => ({
     }
 });
 
+function lerp(a, b, t) {
+    return a + (b - a) * t;
+}
+
+function lerpColor(c1, c2, t) {
+    return `rgb(
+    ${Math.round(lerp(c1[0], c2[0], t))},
+    ${Math.round(lerp(c1[1], c2[1], t))},
+    ${Math.round(lerp(c1[2], c2[2], t))}
+  )`;
+}
 
 async function generateBandGraph(data, date) {
     const hourly = toHourlyBands(data);
@@ -212,6 +223,8 @@ async function generateBandGraph(data, date) {
     const mins = hourly.map(h => h.min);
     const maxes = hourly.map(h => h.max);
     const avgs = hourly.map(h => +h.avg.toFixed(2));
+    const minVal = Math.min(...hourly.map(h => h.avg));
+    const maxVal = Math.max(...hourly.map(h => h.avg));
 
     const configuration = {
         type: "line",
@@ -306,19 +319,22 @@ async function generateBandGraph(data, date) {
                 x: {
                     ticks: {
                         color: "#cbd5e1",
+                        font: {size: 14},
                         callback: (value, index) => {
                             // labels[index] is "HH:00" → extract HH
                             return configuration.data.labels[index].slice(0, 2);
                         }
+
                     },
                     grid: {color: "#334155"}
                 },
                 y: {
-                    ticks: {color: "#cbd5e1"},
+                    ticks: {color: "#cbd5e1", font: {size: 16}},
                     grid: {color: "#334155"},
                     title: {
                         display: true,
                         text: "c/kWh",
+                        font: {size: 16},
                         color: "#e5e7eb"
                     }
                 }
