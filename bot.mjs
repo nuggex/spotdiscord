@@ -346,20 +346,32 @@ async function generateBandGraph(data, date) {
     };
 
     const buffer = await chartCanvas.renderToBuffer(configuration);
-    fs.writeFileSync("/tmp/prices.png", buffer);
+    fs.writeFileSync("./prices.png", buffer);
 }
+
+function pricesNotAvailable(text) {
+    return text.includes("not available");
+}
+
+const LOCK_FILE = "./spot_prices_posted.lock";
 
 
 async function postDaily() {
-    const res = await fetch("https://api.spot-hinta.fi/dayForward");
-
-    if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
+    // If already posted today → exit
+    if (fs.existsSync(LOCK_FILE)) {
+        console.log("Prices already posted, exiting.");
+        process.exit(0);
     }
+    const res = await fetch("https://api.spot-hinta.fi/dayForward");
 
     const text = await res.text();
     if (!text) {
         throw new Error("Empty response from API");
+    }
+    //Prices not ready yet → silent exit
+    if (pricesNotAvailable(text)) {
+        console.log("Prices not available yet, retry later.");
+        process.exit(0);
     }
 
     let data;
@@ -380,15 +392,19 @@ async function postDaily() {
     await generateBandGraph(data, date);
 
     if (process.env.TEST_MODE === "true") {
-        console.log("Graph saved to /tmp/prices.png");
+        console.log("Graph saved to ./prices.png");
         process.exit(0);
     }
 
     const channel = await client.channels.fetch(CHANNEL_ID);
     await channel.send({
-        content: `📈 ${formatFinnishDate(date)} Spot prices`,
-        files: ["/tmp/prices.png"]
+        content: `⚡⚡ ${formatFinnishDate(date)} Spot prices ⚡⚡`,
+        files: ["./prices.png"]
     });
+
+    // Create lock file
+    fs.writeFileSync(LOCK_FILE, date);
+
     process.exit(0);
 }
 
